@@ -4,9 +4,10 @@
     <%- include('partials/head.ejs') %>
     <title>Main</title>
   </head>
-  <body class="container-fluid">
+  <body class="container-fluid pt-3 pb-3">
+
     <% if (filmList.length) { %>
-    <select class="select-film">
+    <select class="select-film mb-3">
       <!-- redirect to home page -->
       <option value="">Default</option>
 
@@ -18,11 +19,19 @@
     </select>
     <% }; %>
 
-    <% if (film) { %>
-    <% film.characters.forEach(function(char){ %>
-      <div><%= char %></div>
+    <div class="loader-wrapper personage-loader" style="display: none;">
+      <div class="spinner-border " role="status" >
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <div class="personage-results">
+      <% if (names) { %>
+      <% names.forEach(function(name){ %>
+      <div><%= name %></div>
       <% }); %>
-    <% }; %>
+      <% }; %>
+    </div>
 
     <%- include('partials/footer') %>
   </body>
