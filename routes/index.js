@@ -1,14 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const { throwError, forkJoin } = require('rxjs');
-const {
-  catchError,
-  mergeMap,
-  tap,
-  switchMap,
-  combineLatest,
-  map
-} = require('rxjs/operators');
+const { catchError } = require('rxjs/operators');
 const router = express.Router();
 
 router.get('/', function (req, res, next) {
@@ -17,8 +10,8 @@ router.get('/', function (req, res, next) {
   result.then(({ data }) => {
     res.render('index', {
       filmList: data.results,
-      film: false,
-      currentValue: Number(req.params.id)
+      currentValue: Number(req.params.id),
+      names: []
     });
   });
 });
@@ -37,8 +30,10 @@ router.get('/:id', function (req, res, next) {
     ({ filmList, film }) => {
       // now we need to fetch a lot of persons
       const peopleResults = forkJoin({
-        ...film.data.characters.map((char) => axios(char))
+        ...film.data.characters.map((char) => axios.get(char))
       });
+
+      peopleResults.pipe(catchError((error) => res.render('error')));
 
       peopleResults.subscribe((i) => {
         // then we need to take just names
@@ -47,8 +42,9 @@ router.get('/:id', function (req, res, next) {
         // final render
         res.render('index', {
           filmList: filmList.data.results,
-          names,
-          currentValue: Number(req.params.id) + 1
+          currentValue: Number(req.params.id) + 1,
+          movieTitle: film.data.title,
+          names
         });
       });
     },
