@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('partials/head.ejs') %>
+    <title>Main</title>
+  </head>
+  <body class="container-fluid">
+    <% if (filmList.length) { %>
+    <select class="select-film">
+      <!-- redirect to home page -->
+      <option value="">Default</option>
+
+      <% filmList.forEach(function(film, index){ %>
+      <option value="<%= index + 1 %>" <%- (currentValue - 1) === (index + 1) ? 'selected' : '' %>>
+        <%= film.title %>
+      </option>
+      <% }); %>
+    </select>
+    <% }; %>
+
+    <% if (film) { %>
+    <% film.characters.forEach(function(char){ %>
+      <div><%= char %></div>
+      <% }); %>
+    <% }; %>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>
