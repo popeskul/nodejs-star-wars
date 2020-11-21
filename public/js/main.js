@@ -6,7 +6,7 @@ if (selectFilm) {
   selectFilm.addEventListener('change', function (event) {
     this.disabled = true;
     personageLoader.style.display = 'block';
-    movieTitle.style.display = 'none';
+    if (movieTitle) movieTitle.style.display = 'none';
     personageResults.style.display = 'none';
     document.location.replace(`/${selectFilm.value}`);
   });

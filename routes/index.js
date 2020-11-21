@@ -11,7 +11,8 @@ router.get('/', function (req, res, next) {
     res.render('index', {
       filmList: data.results,
       currentValue: Number(req.params.id),
-      names: []
+      names: [],
+      movieTitle: false
     });
   });
 });
